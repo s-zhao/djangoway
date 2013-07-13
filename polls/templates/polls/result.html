@@ -1,0 +1,12 @@
+{% extends "polls/base.html" %}
+{% block contentmain %}
+<h2>{{poll.question}}</h2>
+<p>{{ poll.pub_date }}</p>
+
+<br/>
+
+    {% for choice in poll.choice_set.all %}
+        {{ choice.choice_text }}: {{ choice.votes }} vote{{ choice.votes|pluralize }} <br/>
+    {% endfor %}
+<p><a href="{% url 'sstar:detail' poll.id %}">Vote Again?</a></p>
+{% endblock %}

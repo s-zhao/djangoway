@@ -1,0 +1,16 @@
+{% load staticfiles %}
+<html>
+<head>
+<link type="text/css" rel="stylesheet" href="{% static 'polls/style.css' %}">
+</head>
+<body>
+<h1> polls </h1>
+<div id="content">
+{% block contentmain %}
+main content data goes here
+{% endblock %}
+</div>
+
+<h1> end of polls</h1>
+</body>
+</html>
