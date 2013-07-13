@@ -1,0 +1,4 @@
+djangoway
+=========
+
+fun with django
