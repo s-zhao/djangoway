@@ -5,7 +5,13 @@ setup_test_environment()
 
 client = Client()
 
-resp = client.get('/polls/')
-print resp.context
 
+
+def run():
+    resp = client.get('/polls/')
+
+    print resp.context
+    print
+    print resp.content
+    print
 

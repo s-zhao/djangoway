@@ -1,6 +1,11 @@
 # Django settings for dj_demo_proj project.
 
 from dj_demo_proj import secret as _secret 
+import os
+
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_DIR = os.path.dirname(THIS_DIR)
+ROOT_DIR = os.path.dirname(PROJECT_DIR)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -113,7 +118,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/shichang/dj_demo_proj/polls/templates',
+    #os.path.join(PROJECT_DIR, '/polls/templates'),
 )
 
 INSTALLED_APPS = (
@@ -128,6 +133,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'polls',
+    'django_extensions',
 )
 
 # A sample logging configuration. The only tangible logging
