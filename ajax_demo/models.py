@@ -27,4 +27,25 @@ class SillyContact(models.Model):
         return u'%s %s' % (self.first_name, self.last_name)
         
         
+import django_filters  
+"""
+{% block content %}
+    <form action="" method="get">
+        {{ filter.form.as_p }}
+        <input type="submit" />
+    </form>
+    {% for obj in filter %}
+        {{ obj.name }} - ${{ obj.price }}<br />
+    {% endfor %}
+{% endblock %}
+"""      
+class SalariedContact(django_filters.FilterSet):
+    
+    salary = django_filters.NumberFilter(lookup_type='gt')
+    last_name = django_filters.CharFilter(lookup_type='icontains')
+    
+    class Meta:
+        model = SillyContact
+        fields = ['salary', 'last_name']
+        
         
