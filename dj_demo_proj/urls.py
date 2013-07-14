@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     url(r'^polls/', include('polls.urls', namespace='sstar')),
+    url(r'^ajax/', include('ajax_demo.urls', namespace='ajax-demo')),
     
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

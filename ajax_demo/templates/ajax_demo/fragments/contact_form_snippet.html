@@ -1,0 +1,52 @@
+{% comment %}
+args - form, to use different context, use include with form=the-form
+{% endcomment %}
+
+{% csrf_token %}
+{{ form.non_field_errors }}
+<div class="field contact-edit">
+    {{ form.first_name.errors }}
+    <label for="id_first_name">First Name:</label>
+    {{ form.first_name }} {{ form.first_name.help_text }}
+</div>
+<div class="field contact-edit">
+    {{ form.last_name.errors }}
+    <label for="id_last_name">Last Name:</label>
+    {{ form.last_name }} {{ form.last_name.help_text }}
+</div>
+<div class="field contact-edit">    
+    <label for="id_email">Email:</label>
+    {{ form.email }} {{ form.email.help_text }} 
+    {% for error in form.email.errors %}
+        {{ error }}
+    {% empty %}
+        .
+    {% endfor %}
+</div>
+
+<div class="field contact-edit">
+    {{ form.title.errors }}
+    <label for="id_title">Title:</label>
+    {{ form.title }} {{ form.title.help_text }}
+</div>
+<div class="field contact-edit">    
+    <label for="id_dob">Date of Birth:</label>
+    {{ form.dob }} {{ form.dob.help_text }} 
+    {% for error in form.dob.errors %}
+        {{ error }}
+    {% empty %}
+        .
+    {% endfor %}
+</div>
+<div class="field contact-edit">
+    {{ form.salary.errors }}
+    <label for="id_salary">Salary:</label>
+    {{ form.salary }} {{ form.salary.help_text }}
+</div>
+
+<style>
+div.contact-edit > label {
+    display: inline-block;
+    width: 200px;
+}
+</style>

@@ -1,0 +1,15 @@
+<h2>Contacts</h2>
+{% for contact in contacts %}    
+    Search Found {{ contacts|length }} record{{ contacts|pluralize }} <br/>
+    <ul>
+        <li>{{ contact.first_name }} {{ contact.last_name }}</li>
+    </ul>
+{% empty %}
+    <b>found no records</b>
+{% endfor %}
+<hr/>
+<a href="{% url 'ajax-demo:contact-new' %}">New Contact</a>
+
+<script>
+    //alert('found {{ contacts|length }} record{{ contacts|pluralize }}');
+</script>

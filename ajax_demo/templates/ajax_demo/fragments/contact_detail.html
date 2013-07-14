@@ -1,0 +1,4 @@
+<form action="{% url 'ajax-demo:contact-edit' pk=contact_record.id %}" method="post">
+{% include 'ajax_demo/fragments/contact_form_snippet.html' with form=contact_form %}
+<p><input type="submit" value="Edit This Contact" /></p>
+</form>

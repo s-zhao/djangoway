@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'polls',
+    'ajax_demo',
     'django_extensions',
 )
 

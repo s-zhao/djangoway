@@ -1,0 +1,32 @@
+{% extends 'ajax_demo/base.html' %}
+
+{% block content %}
+<script>
+
+function load_records() {
+    $.ajax({
+        // namespaced url - namespace:path.to.view, or namespace:viewNameGiven {% url 'ajax-demo:contacts' %}
+        // namespace not used - path.to.view or NameGivenToTheView 
+        url: '{% url 'ajax-demo:ajax_demo.views.contacts' %}',
+        type: 'GET',
+        //dataType: 'html',
+        //async: true,
+        //data: {} || 'a=1&b=2',
+    })
+    .done(function(data, status, xhr) {
+        $('#content').html(data);    
+    })
+    .fail(function(xhr, status, error) {
+        $('#content').html('<pre>'+error+'</pre>');
+    });
+    /**
+     .always(function(data_or_xhr, status, error) {...})
+     .then(done_callback, fail_callback)
+    **/
+}
+
+$(document).ready(function() {
+    load_records();
+});
+</script>
+{% endblock %}
