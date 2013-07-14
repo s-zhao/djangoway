@@ -54,4 +54,20 @@ class SillyContactForm(forms.Form):
     
     dob = forms.DateField(required=False, input_formats=['%m/%d/%y', '%Y-%m-%d'], initial=timezone.now(), error_messages={'invalid': 'invalid dob'})
     
+
+from ajax_demo.models import SillyContact
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = SillyContact
+        fields = ['first_name', 'last_name', 'title', 'email', 'salary', 'dob'] #default is '__all__'
+        
+        #exlude = [...]
+        #
+        #
+        # widgets, labels, help_texts, error_messages for further customization form display
+        #
+        #
+        
+        
     
