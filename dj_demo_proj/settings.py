@@ -135,6 +135,8 @@ INSTALLED_APPS = (
     'polls',
     'ajax_demo',
     'django_extensions',
+    'rest_framework',
+    'restful',
 )
 
 # A sample logging configuration. The only tangible logging
