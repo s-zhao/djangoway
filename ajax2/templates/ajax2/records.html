@@ -1,0 +1,13 @@
+{% extends 'ajax2/base.html' %}
+
+{% block content %}
+<table>
+<tr><th>ID</th><th>Subject</th></tr>
+{% for record in records %}    
+    <tr><td>{{ record.id }}</td><td><a href="{% url 'ajax2:view-record' pk=record.id %}" target="_blank">{{ record.subject }}</a></td></tr>
+{% empty %}
+    <tr><td>&nbsp;</td><td>search found no records</td></tr>
+{% endfor %}
+</table>
+
+{% endblock %}

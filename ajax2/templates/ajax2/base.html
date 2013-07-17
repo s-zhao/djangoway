@@ -1,0 +1,17 @@
+{% load staticfiles %}
+{% static 'ajax2' as static_dir %}
+
+<!doctype html>
+<html>
+<head>
+<script src="{{ static_dir }}/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+<h2> Ajax Demo</h2>
+<div id="content">
+{% block content %}
+
+{% endblock %}
+</div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+{% extends 'ajax2/base.html' %}
+
+{% block content %}
+<form action="" method="post">
+{% csrf_token %} 
+    <input type="hidden" name="id" id="blog_id" value="{{ blog.id|default_if_none:"90" }}">
+    
+    <div class="field-row">
+        <label>Subject:</label> <input type="text" id="id_subject" name="subject" value="{{ blog.subject }}">
+        <p><span id="blog-subject"></span></p>
+    </div>
+    <div class="field-row">
+        <lable>Body:</lable> <textarea id="id_body" name="body" rows="6" cols="40">{{ blog.body }}</textarea>
+        <p><span id="blog-body"></span></p>
+    </div>
+    
+    <hr>
+    
+    <a href="#" id="save-blog">Save</a> | 
+    <a href="{% url 'ajax2:list-record' %}">Back to list</a>
+    
+    <p><span id="server-message"></span></p>
+    
+</form>    
+    
+<script>
+
+{% comment %}
+    page must load csrf-token, which will also be transported via cookies
+{% endcomment %}
+
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+function sameOrigin(url) {
+    // test that a given url is a same-origin URL
+    // url could be relative or scheme relative or absolute
+    var host = document.location.host; // host + port
+    var protocol = document.location.protocol;
+    var sr_origin = '//' + host;
+    var origin = protocol + sr_origin;
+    // Allow absolute or scheme relative URLs to same origin
+    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+        // or any other URL that isn't scheme relative or absolute i.e relative.
+        !(/^(\/\/|http:|https:).*/.test(url));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+            // Send the token to same-origin, relative URLs only.
+            // Send the token only if the method warrants CSRF protection
+            // Using the CSRFToken value acquired earlier
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+
+function saveRecord() {
+    var url, blog_id, data;
+    
+    url = "{% url 'ajax2:save-record' 0 %}";
+    blog_id = $('#blog_id').val();
+    blog_id ? (url = url.replace(/\/0\//g, '/'+blog_id+'/')) : null;
+    
+    data = {subject: $('#id_subject').val(),
+            body: $('#id_body').val()
+           };
+           
+    $('#server-message').html("");
+    
+    $.ajax({
+        url: url,
+        method: 'POST', 
+        data: data
+    })
+    .done(function(resp, status, xhr) {
+        if (resp.errors) {
+            var ar = [];
+            for (entry in resp.errors) {
+                ar.push(entry + ": " + resp.errors[entry].join(', '));
+            }
+            $('#server-message').html("<pre>\n"+ar.join("<br/>")+"\n</pre>");
+            return;
+        }
+        var ar = []
+        ar.push(resp.id);ar.push(resp.subject);ar.push(resp.body);
+        var out = ar.join("<br/>");
+        $('#server-message').html("<pre>\n"+out+"\n</pre>");
+        $('#blog_id').val(resp.id);
+    })
+    .fail(function(xhr, status, error) {
+        $('#server-message').html(error);
+    });
+}
+
+$(document).ready(function() {
+    $('#save-blog').click(function() {
+        saveRecord();
+    });
+});
+
+</script>    
+{% endblock %}
