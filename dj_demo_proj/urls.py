@@ -15,6 +15,10 @@ urlpatterns = patterns('',
     url(r'^polls/', include('polls.urls', namespace='sstar')),
     url(r'^ajax/', include('ajax_demo.urls', namespace='ajax-demo')),
     
+    url(r'^ajax2/', include('ajax2.urls', namespace='ajax2')),
+    
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    
+    
 )
