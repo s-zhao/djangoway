@@ -1,0 +1,90 @@
+{% extends 'ajax2/base.html' %}
+
+{% load staticfiles %} {# this is needed any pages need access `static`, even though base.html already loaded it #]
+
+{% block jscripts %}
+<script type="text/javascript" src="{% static 'js/libs/angular.min.js' %}"></script>
+<script>
+
+/**
+ * 
+ *
+ */
+var ngBlog = angular.module('ngBlog', []);
+
+/**
+ * value services
+ *
+ */
+ngBlog.value('VERSION', 'version-1.0');
+
+/**
+ * data model - angular services are singleton
+ *
+ */
+ngBlog.service('BlogManager', ['$http', '$q', function($http, $q) {
+    var baseUrl, services;
+    baseUrl = "/ajax2/ng";
+    services = {
+        blogs: function(cb) {
+            $http.get(baseUrl+"/blogs")
+            .success(function(data, status, headers, config) {
+                console.log(data);
+                cb(data);
+            })
+            .error(function(data, status, headers, config) {
+                console.log('error:'+status);
+            });
+        }
+    };
+    
+    return services;
+}]);
+
+ngBlog.controller('blogController', ['$scope', 'BlogManager', function($scope, BlogManager) {
+    /**
+     * ways to run initialization code
+     *
+     */
+    $scope.blogs = [];
+    
+    BlogManager.blogs(function(data) {
+        $scope.blogs = data;
+    });
+
+}]);
+
+function JsCallThingInModules() {
+    /**
+     * keynote: it is through inject we access module services
+     *
+     * http://docs.angularjs.org/api/angular.module
+     *
+     */
+    var injector = angular.injector(['ng', 'ngBlog']);
+    var manager = injector.get('BlogManager');
+    manager.blogs(function(data) {
+        var count = data.length;
+        console.log('injector: '+count +', version:' + injector.get('VERSION'));
+    });
+
+}
+
+$(document).ready(function() {
+    JsCallThingInModules();
+});
+
+</script>    
+{% endblock %}
+
+{% block content %}
+<div ng-app="ngBlog">
+    <div ng-controller="blogController">
+    <ul>
+        <li ng-repeat="blog in blogs">
+            {% verbatim %} {{blog.subject}} {% endverbatim %}
+        </li>
+    </ul>
+    </div>
+</div>
+{% endblock %}

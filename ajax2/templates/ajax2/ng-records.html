@@ -1,0 +1,32 @@
+<div id="myctrl" ng-controller="MyRecords">
+    <span ng-init="x=1; y=2;"></span>
+    <span>{% verbatim %}{ x < y? x: y;}{% endverbatim %}</span>
+    <ul>
+    <li ng-repeat="record in records">        
+    {% verbatim %}
+        <a href="javascript:void(0);" ng-click="detail($index, record.id)">{{record.subject}}</a>
+        <span id="record-{{record.id}}" style="color:red;"></span>
+    {% endverbatim %}
+    </li>
+    </ul>
+    
+    <hr>
+    {% verbatim %}
+    {{zSym}}
+    {% endverbatim %}    
+</div>
+
+
+<script>
+MyRecords = function($scope, $http) {
+    $scope.records = {{ records|safe }};
+    
+    $scope.detail = function(i, id) {
+        var v = $scope.records[i].subject;        
+        //$('#record-'+id).html( $scope.records[i].subject );
+        angular.element('#record-'+id).html( v );
+        $scope.records[i].subject = "xx: " + v;
+    }
+}
+
+</script>

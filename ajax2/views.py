@@ -1,5 +1,7 @@
 # Create your views here.
 
+#http://django-tastypie.readthedocs.org/en/latest/authorization.html#usage
+
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.core.urlresolvers import reverse
@@ -9,12 +11,36 @@ from rest_framework.response import Response
 from ajax2.models import SillyBlog
 
 #
+# django + angular
+#
+def ng_way(request):
+    records = api_list_records(request)
+    serializer = SillyBlogSerializer(records, many=True)
+    
+    json = renderers.JSONRenderer().render(serializer.data)
+    
+    context = {'records': json}
+    
+    context = {}
+    return render(request, 'ajax2/ng.html', context)
+
+    
+#
+# django + jQuery + ajax
+#
+
+#
 # HTTP request
 #
 def list_record(request):
-    records = api_list_records(request)
+    records = api_list_records(request)    
     context = {'records': records}
     return render(request, 'ajax2/records.html', context)
+
+def blogs(request):
+    records = api_list_records(request)
+    data=SillyBlogSerializer(records).data
+    return _response(request, data)
     
 def get_record(request, pk): 
     blog = api_new_record if pk == '0' else api_get_record(pk)        
